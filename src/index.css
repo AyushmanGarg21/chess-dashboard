@@ -5,6 +5,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: bisque;
 }
 
 code {
@@ -27,6 +28,22 @@ code {
   margin-top: 50px;
 }
 
+button{
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding:10px 5px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+input{
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  margin-bottom: 10px;
+}
+
 .buttons-container {
   display: flex;
   justify-content: center;
@@ -47,4 +64,58 @@ code {
 .dashboard-link:hover,
 .visualizer-link:hover {
   background-color: #0056b3;
+}
+
+.dashboard-container {
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+.username {
+  color: #007bff;
+}
+
+.stats-container {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.metric {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: #fff;
+}
+
+.metric h3 {
+  margin-top: 0;
+  margin-bottom: 10px;
+}
+
+.metric ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.metric li {
+  margin-bottom: 5px;
+}
+
+.additional-info {
+  margin-top: 20px;
+}
+
+.additional-info p {
+  margin-bottom: 5px;
+}
+
+.additional-info a {
+  color: #007bff;
 }

@@ -23,14 +23,12 @@ const ChessPlayerDashboard = ({playerUsername}) => {
         return <p>Loading...</p>;
     }
 
-    // Destructure playerData object
     const { id, username, perfs, createdAt, seenAt, playTime, url, count } = playerData;
 
     return (
         <div className="dashboard-container">
             <h2 className="username">Username: {username}</h2>
             <div className="stats-container">
-                {/* Display performance metrics */}
                 <div className="metric">
                     <h3>Performance Metrics</h3>
                     <ul>
@@ -41,12 +39,10 @@ const ChessPlayerDashboard = ({playerUsername}) => {
                         ))}
                     </ul>
                 </div>
-                {/* Display play time */}
                 <div className="metric">
                     <h3>Play Time</h3>
                     <p>Total: {playTime.total} minutes</p>
                 </div>
-                {/* Display game count */}
                 <div className="metric">
                     <h3>Game Count</h3>
                     <ul>
@@ -58,7 +54,6 @@ const ChessPlayerDashboard = ({playerUsername}) => {
                     </ul>
                 </div>
             </div>
-            {/* Display additional information */}
             <div className="additional-info">
                 <p><strong>ID:</strong> {id}</p>
                 <p><strong>Created At:</strong> {new Date(createdAt).toLocaleString()}</p>
