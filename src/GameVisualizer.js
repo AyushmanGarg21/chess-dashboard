@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
-const GameVisualizer = ({ gameId }) => {
+
+const GameVisualizer = ({gameId}) => {
     const [gameData, setGameData] = useState(null);
 
     // Fetch game data
@@ -17,8 +18,6 @@ const GameVisualizer = ({ gameId }) => {
     useEffect(() => {
         fetchGameData();
     }, [gameId]);
-
-    // Optional: Visualize game data
 
     return (
         <div>

@@ -1,25 +1,23 @@
-import React from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import React ,{ useState } from 'react';
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import ChessPlayerDashboard from './ChessPlayerDashboard';
 import GameVisualizer from './GameVisualizer';
+import Home from './Home';
 
 const App = () => {
+    const [userId, setUserId] = useState('');
+    const [gameId, setGameId] = useState('');
     return (
-        <Router>
-            <div>
-                <h1>Chess Player Dashboard App</h1>
-                <Switch>
-                    {/* Route to display player dashboard */}
-                    <Route exact path="/player/:username">
-                        <ChessPlayerDashboard />
-                    </Route>
-                    {/* Route to display game visualizer */}
-                    <Route exact path="/game/:gameId">
-                        <GameVisualizer />
-                    </Route>
-                </Switch>
-            </div>
-        </Router>
+        <div className='app-container'>
+            <h1 className="app-title">Chess Player Dashboard App</h1>
+            <Router>
+                <Routes>
+                    <Route path="/" element={<Home userId = {userId} setUserId = {setUserId} gameId = {gameId}setGameId={setGameId} />} />
+                    <Route path="/game/:gameId" element={<GameVisualizer gameId={gameId}/>} />
+                    <Route path="/player/:username" element={<ChessPlayerDashboard playerUsername = {userId}/>} />
+                </Routes>   
+            </Router>
+        </div>
     );
 };
 

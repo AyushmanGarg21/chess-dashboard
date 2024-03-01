@@ -1,64 +1,69 @@
 import React, { useState, useEffect } from 'react';
 
-const ChessPlayerDashboard = ({ username }) => {
-    // State variables to hold player details, game metrics, and online status
-    const [playerDetails, setPlayerDetails] = useState(null);
-    const [gameMetrics, setGameMetrics] = useState(null);
-    const [isOnline, setIsOnline] = useState(false);
+const ChessPlayerDashboard = ({playerUsername}) => {
+    const [playerData, setPlayerData] = useState({});
 
-    // Function to fetch player details, game metrics, and online status
-    const fetchPlayerData = async () => {
-        try {
-            // Fetch player details
-            const userDetailsResponse = await fetch(`https://lichess.org/api/user/${username}`);
-            const userDetails = await userDetailsResponse.json();
-            setPlayerDetails(userDetails);
-
-            // Fetch game metrics
-            const gameMetricsResponse = await fetch(`https://lichess.org/api/user/${username}/games`);
-            const games = await gameMetricsResponse.json();
-            const blitzGames = games.filter(game => game.perf === 'blitz');
-            const bulletGames = games.filter(game => game.perf === 'bullet');
-            const correspondenceGames = games.filter(game => game.perf === 'correspondence');
-            setGameMetrics({ blitz: blitzGames.length, bullet: bulletGames.length, correspondence: correspondenceGames.length });
-
-            // Check online status
-            setIsOnline(userDetails.online);
-        } catch (error) {
-            console.error('Error fetching player data:', error);
-        }
-    };
-
-    // Fetch player data on component mount
     useEffect(() => {
-        fetchPlayerData();
-    }, [username]);
+        const fetchPlayerData = async () => {
+            try {
+                const response = await fetch(`https://lichess.org/api/user/${playerUsername}`, {
+                    method: "GET",
+                  });
+                const data = await response.json();
+                setPlayerData(data);
+            } catch (error) {
+                console.error('Error fetching player data:', error);
+            }
+        };
+
+        if(playerUsername !== undefined) fetchPlayerData();
+    }, [playerUsername]);
+
+    if (!playerData || Object.keys(playerData).length === 0) {
+        return <p>Loading...</p>;
+    }
+
+    // Destructure playerData object
+    const { id, username, perfs, createdAt, seenAt, playTime, url, count } = playerData;
 
     return (
-        <div>
-            {/* Display player details */}
-            {playerDetails && (
-                <div>
-                    <h2>{playerDetails.username}</h2>
-                    <p>Rating: {playerDetails.perfs.blitz.rating}</p>
-                    <p>Country: {playerDetails.profile.country}</p>
+        <div className="dashboard-container">
+            <h2 className="username">Username: {username}</h2>
+            <div className="stats-container">
+                {/* Display performance metrics */}
+                <div className="metric">
+                    <h3>Performance Metrics</h3>
+                    <ul>
+                        {Object.keys(perfs).map((perfKey, index) => (
+                            <li key={index}>
+                                <span className="perf-name">{perfKey}</span>: {perfs[perfKey].games} games, {perfs[perfKey].rating} rating
+                            </li>
+                        ))}
+                    </ul>
                 </div>
-            )}
-
-            {/* Display game metrics */}
-            {gameMetrics && (
-                <div>
-                    <h3>Game Metrics</h3>
-                    <p>Blitz Games: {gameMetrics.blitz}</p>
-                    <p>Bullet Games: {gameMetrics.bullet}</p>
-                    <p>Correspondence Games: {gameMetrics.correspondence}</p>
+                {/* Display play time */}
+                <div className="metric">
+                    <h3>Play Time</h3>
+                    <p>Total: {playTime.total} minutes</p>
                 </div>
-            )}
-
-            {/* Display online status */}
-            <div>
-                <h3>Online Status</h3>
-                <p>{isOnline ? 'Online' : 'Offline'}</p>
+                {/* Display game count */}
+                <div className="metric">
+                    <h3>Game Count</h3>
+                    <ul>
+                        {Object.keys(count).map((countKey, index) => (
+                            <li key={index}>
+                                {countKey}: {count[countKey]}
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+            </div>
+            {/* Display additional information */}
+            <div className="additional-info">
+                <p><strong>ID:</strong> {id}</p>
+                <p><strong>Created At:</strong> {new Date(createdAt).toLocaleString()}</p>
+                <p><strong>Last Seen At:</strong> {new Date(seenAt).toLocaleString()}</p>
+                <p><strong>Profile URL:</strong> <a href={url} target="_blank" rel="noopener noreferrer">{url}</a></p>
             </div>
         </div>
     );
